@@ -43,5 +43,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Image') {
+            steps {
+                sh '''
+                docker stop tp4-app 2>/dev/null || true
+                docker rm tp4-app 2>/dev/null || true
+                docker run -d --name tp4-app -p 8081:80 $registry:latest
+                echo "Application déployée → http://localhost:8081"
+                '''
+            }
+        }
     }
 }
